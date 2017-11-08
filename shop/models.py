@@ -3,4 +3,7 @@ from __future__ import unicode_literals
 
 from django.db import models
 
-# Create your models here.
+class Category(models):
+    name = models.Charfield(maxlength=20)
+    slug = models.SlugField(max_length=30)
+
