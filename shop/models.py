@@ -23,7 +23,7 @@ class ProductVariant(models.Model):
 class Product(models.Model):
     name = models.CharField(max_length=20, unique=True)
     slug = models.SlugField(max_length=40, unique=True)
-    desription = models.TextField()
+    description = models.TextField()
     base_price = models.DecimalField(max_digits=5, decimal_places=2)
     image = models.ImageField()
     category = models.ForeignKey(Category)
