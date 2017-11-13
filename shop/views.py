@@ -10,4 +10,4 @@ from .models import Product
 def index(request):
     data = serializers.serialize('json', Product.objects.all(),
                                  use_natural_foreign_keys=True)
-    return JsonResponse(data)
+    return JsonResponse(data, safe=False)
