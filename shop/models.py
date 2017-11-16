@@ -33,7 +33,7 @@ class Product(models.Model):
     slug = models.SlugField(max_length=70, unique=True)
     description = models.TextField()
     base_price = models.DecimalField(max_digits=5, decimal_places=2)
-    image = models.ImageField(blank=True)
+    image = models.ImageField(upload_to='product images/', blank=True)
     category = models.ForeignKey(Category)
     variants = models.ManyToManyField(Variant, through='Item', blank=True)
 
