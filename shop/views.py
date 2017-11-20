@@ -5,12 +5,15 @@ from django.shortcuts import render
 from django.core import serializers
 from django.http import HttpResponse
 
-from .models import Product
+from .models import Product, Category
 
 def index(request):
-    data = serializers.serialize('json', Product.objects.all(),
-                                 use_natural_foreign_keys=True)
-    return HttpResponse(data, content_type='application/json')
+    if request.method == 'GET':
+        categories = Category.objects.all()
+        products = Product.objects.all()
+        data = {category.name: products.filter(category__name=category.name) for
+                category in categories}
+        return render(request, 'shop/index.html', {'products_by_cat': data})
 
 def product(request):
     if request.method == 'GET':
