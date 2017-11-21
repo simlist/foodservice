@@ -1,14 +1,14 @@
 {% extends 'base.html' %}
 {% block content %}
   <h2>Menu</h2>
-  <ul>	
+  <div class="list-group" id="category-list">	
 	{% for category, products in products_by_cat.items %}
-	  <li>{{category}}</li>
-		  <ul>
+	  <a href="#" class="list-group-item">{{category}}</a>
+		  <div class="list-group">
 		  {% for product in products%}
-			  <li>{{product.name}} - Base price: ${{product.base_price}}</li>
+			  <a href="#" class="list-group-item">{{product.name}} - Base price: ${{product.base_price}}</a>
 			{%endfor%}
-      </ul>
+      </div>
 	{%endfor%}
-  </ul>
+  </div>
 {% endblock %}
