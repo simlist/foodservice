@@ -24,4 +24,5 @@ urlpatterns = [
     url(r'^shop/', include('shop.urls')),
     url(r'accounts/', include('authtools.urls')),
     url(r'^$', index),
+    url(r'^cart/', include('cart.urls')),
 ]
