@@ -17,22 +17,11 @@ class Category(models.Model):
         return (self.name,)
 
 
-class Variant(models.Model):
-    name = models.CharField(max_length=20)
-    group_name = models.CharField(max_length=20)
-
-    def __str__(self):
-        return self.name
-
-    def natural_key(self):
-        return (self.group_name, self.name)
-
-
-class Product(models.Model):
+class BaseProduct(models.Model):
     name = models.CharField(max_length=50, unique=True)
     slug = models.SlugField(max_length=70, unique=True)
     description = models.TextField()
-    base_price = models.DecimalField(max_digits=5, decimal_places=2)
+    price = models.DecimalField(max_digits=5, decimal_places=2)
     image = models.ImageField(upload_to='product images/', blank=True)
     category = models.ForeignKey(Category)
     variants = models.ManyToManyField(Variant, through='Item', blank=True)
@@ -41,16 +30,18 @@ class Product(models.Model):
         return self.name
 
 
-class Item(models.Model):
-    product = models.ForeignKey(Product, on_delete=models.CASCADE)
-    variant = models.ForeignKey(Variant, blank=True, on_delete=models.CASCADE)
-    price_added = models.DecimalField(max_digits=5, decimal_places=2,
+class Product(models.Model):
+    base_product = models.ForeignKey(BaseProduct, on_delete=models.CASCADE)
+    variant_name = models.CharField(max_length=20)
+    price_added = models.DecimalField(max_digits=5,
+                                      decimal_places=2,
                                       default=0.00)
+    group_name = models.CharField(max_length=20)
 
     def __str__(self):
-        return ' - '.join((self.product.name, self.variant.name))
+        return ' - '.join((self.base_product.name, self.variant_name)
 
     @property
     def price(self):
-        return self.product.base_price + self.price_added
+        return self.base_product.price + self.price_added
 
