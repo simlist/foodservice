@@ -23,8 +23,7 @@ class BaseProduct(models.Model):
     description = models.TextField()
     price = models.DecimalField(max_digits=5, decimal_places=2)
     image = models.ImageField(upload_to='product images/', blank=True)
-    category = models.ForeignKey(Category)
-    variants = models.ManyToManyField(Variant, through='Item', blank=True)
+    category = models.ForeignKey(Category, on_delete=models.CASCADE)
 
     def __str__(self):
         return self.name
@@ -39,7 +38,7 @@ class Product(models.Model):
     group_name = models.CharField(max_length=20)
 
     def __str__(self):
-        return ' - '.join((self.base_product.name, self.variant_name)
+        return ' - '.join((self.base_product.name, self.variant_name))
 
     @property
     def price(self):
