@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 from __future__ import unicode_literals
 
+from django.utils.text import slugify
 from django.db import models
 
 class Category(models.Model):
@@ -36,6 +37,12 @@ class Product(models.Model):
                                       decimal_places=2,
                                       default=0.00)
     group_name = models.CharField(max_length=20)
+    slug = models.SlugField(max_length=100, unique=True)
+
+    def save(self, *args, **kwargs):
+        if not self.slug:
+            self.slug = slugify('-'.join((self.base_product.name, self.variant_name)))
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return ' - '.join((self.base_product.name, self.variant_name))
@@ -43,4 +50,5 @@ class Product(models.Model):
     @property
     def price(self):
         return self.base_product.price + self.price_added
+
 
